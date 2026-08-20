@@ -25,6 +25,7 @@
   }
 
   *{ box-sizing: border-box; }
+
   html{ scroll-behavior: smooth; }
 
   body{
@@ -86,7 +87,10 @@
     max-width: 640px;
     margin: 0 auto 8px;
   }
-  .welcome-msg .wink{ color: var(--pink); }
+
+  .welcome-msg .wink{
+    color: var(--pink);
+  }
 
   .subtext{
     color: var(--text-muted);
@@ -111,7 +115,12 @@
     gap: 10px;
     text-align: left;
   }
-  .disclaimer .icon{ flex-shrink:0; font-size: 1.2rem; line-height: 1; }
+
+  .disclaimer .icon{
+    flex-shrink:0;
+    font-size: 1.2rem;
+    line-height: 1;
+  }
 
   /* ---------- Form ---------- */
   section.form-section{
@@ -142,7 +151,10 @@
     font-weight: 600;
   }
 
-  .input-row{ display:flex; gap: 10px; }
+  .input-row{
+    display:flex;
+    gap: 10px;
+  }
 
   #nombreInput{
     flex:1;
@@ -158,7 +170,11 @@
     transition: border-color .2s, box-shadow .2s;
   }
 
-  #nombreInput::placeholder{ color: rgba(244,240,255,0.35); font-weight: 600; }
+  #nombreInput::placeholder{
+    color: rgba(244,240,255,0.35);
+    font-weight: 600;
+  }
+
   #nombreInput:focus{
     border-color: var(--pink);
     box-shadow: 0 0 0 4px rgba(255,63,176,0.18);
@@ -183,7 +199,15 @@
     transform: translateY(-2px) scale(1.02);
     box-shadow: 0 12px 28px rgba(255,63,176,0.45);
   }
-  #enviarBtn:active{ transform: translateY(0) scale(0.98); }
+
+  #enviarBtn:active{
+    transform: translateY(0) scale(0.98);
+  }
+
+  #enviarBtn:disabled{
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
 
   #formMsg{
     min-height: 20px;
@@ -216,7 +240,10 @@
     font-size: 0.95rem;
     margin-bottom: 34px;
   }
-  .participants-count span{ color: var(--cyan); }
+
+  .participants-count span{
+    color: var(--cyan);
+  }
 
   #listaParticipantes{
     display: flex;
@@ -282,6 +309,7 @@
       cuanto más veces compres, más posibilidades tienes de ganar.
     </p>
     <p class="subtext">Mucha suerte a todos los miembros del clan ✨</p>
+
     <div class="disclaimer">
       <span class="icon">⚠️</span>
       <span>Si inscribes tu apodo más veces de las veces que compraste, serás automáticamente eliminado.</span>
@@ -306,31 +334,23 @@
     <div id="listaParticipantes"></div>
   </section>
 
-  <footer>Sorteo del Clan · Buena suerte a todos 🍀</footer>
+  <footer>
+    Sorteo del Clan · Buena suerte a todos 🍀
+  </footer>
 
-<!-- NOTA: Type module es necesario para importar Firebase -->
 <script type="module">
   // 1. Importar Firebase
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
   import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-database.js";
 
-  // 2. CONFIGURACIÓN DE FIREBASE (¡REEMPLAZA ESTO CON TUS DATOS!)
-  const firebaseConfig = {
-    apiKey: "TU_API_KEY",
-    authDomain: "TU_PROYECTO.firebaseapp.com",
-    databaseURL: "https://TU_PROYECTO-default-rtdb.firebaseio.com",
-    projectId: "TU_PROYECTO",
-    storageBucket: "TU_PROYECTO.appspot.com",
-    messagingSenderId: "TU_MESSAGING_ID",
-    appId: "TU_APP_ID"
-  };
+  // 2. REEMPLAZA ESTO CON LOS DATOS DE TU PROYECTO FIREBASE
+  const firebaseConfig = {apiKey: "AIzaSyDyvaKCp02U4uTT2aN460ndc4RR373kUuY",authDomain: "sorteo-b7f17.firebaseapp.com",projectId: "sorteo-b7f17",storageBucket: "sorteo-b7f17.firebasestorage.app",messagingSenderId: "1020608269192",appId: "1:1020608269192:web:457661d01b5d8efc1b083d",measurementId: "G-DC9EG6CSWZ"};
 
-  // 3. Inicializar Firebase y la Base de Datos
+  // 3. Inicializar Firebase
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
-  const sorteoRef = ref(db, 'participantes'); // 'participantes' es el nombre de la tabla/nodo
+  const sorteoRef = ref(db, 'participantes');
 
-  // Elementos del DOM
   const colores = ['pink', 'cyan', 'yellow', 'green', 'orange', 'violet'];
   const input = document.getElementById('nombreInput');
   const boton = document.getElementById('enviarBtn');
@@ -338,19 +358,17 @@
   const lista = document.getElementById('listaParticipantes');
   const contador = document.getElementById('contador');
 
-  // 4. Leer datos en Tiempo Real
+  // 4. Leer datos en Tiempo Real (mantiene la lógica de colores alternados original)
   onValue(sorteoRef, (snapshot) => {
     const data = snapshot.val();
     const participantes = [];
 
-    // Convertir el objeto de Firebase a un array
     if(data) {
       Object.keys(data).forEach(key => {
         participantes.push(data[key]);
       });
     }
 
-    // Actualizar UI
     contador.textContent = participantes.length;
     lista.innerHTML = '';
 
@@ -369,7 +387,7 @@
     });
   });
 
-  // 5. Función para Inscribir
+  // 5. Enviar a Firebase
   function inscribirParticipante(){
     const nombre = input.value.trim();
 
@@ -379,11 +397,9 @@
       return;
     }
 
-    // Desactivar temporalmente el input para evitar doble clic
     input.disabled = true;
     boton.disabled = true;
 
-    // Subir a Firebase
     push(sorteoRef, {
       nombre: nombre,
       fecha: new Date().toISOString()
@@ -402,7 +418,6 @@
     });
   }
 
-  // Eventos
   boton.addEventListener('click', inscribirParticipante);
   input.addEventListener('keydown', (e) => {
     if(e.key === 'Enter'){
@@ -411,5 +426,6 @@
   });
 
 </script>
+
 </body>
 </html>
