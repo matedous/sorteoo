@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sorteo del Clan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep: #150f2e;
+    --bg-deep-2: #1f1745;
+    --panel: #241a4d;
+    --panel-border: rgba(255,255,255,0.08);
+    --text-main: #f4f0ff;
+    --text-muted: #b9aee0;
+    --pink: #ff3fb0;
+    --cyan: #24e0ff;
+    --yellow: #ffd23f;
+    --green: #3dffa8;
+    --orange: #ff8a3d;
+    --violet: #b06bff;
+    --red: #ff4d5e;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    min-height:100vh;
+    font-family:'Nunito', sans-serif;
+    color: var(--text-main);
+    background:
+      radial-gradient(circle at 15% 10%, rgba(255,63,176,0.18), transparent 40%),
+      radial-gradient(circle at 85% 0%, rgba(36,224,255,0.16), transparent 45%),
+      radial-gradient(circle at 50% 100%, rgba(176,107,255,0.18), transparent 50%),
+      linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-deep-2) 100%);
+    background-attachment: fixed;
+    overflow-x:hidden;
+  }
+
+  /* ---------- Hero ---------- */
+  header.hero{
+    position:relative;
+    padding: 64px 20px 40px;
+    text-align:center;
+    max-width: 820px;
+    margin: 0 auto;
+  }
+
+  .badge-clan{
+    display:inline-block;
+    font-family:'Baloo 2', sans-serif;
+    font-weight:700;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--bg-deep);
+    background: linear-gradient(90deg, var(--yellow), var(--orange));
+    padding: 6px 16px;
+    border-radius: 999px;
+    margin-bottom: 22px;
+    box-shadow: 0 4px 18px rgba(255,140,60,0.35);
+  }
+
+  h1.title{
+    font-family:'Baloo 2', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.2rem, 6vw, 3.4rem);
+    line-height: 1.05;
+    margin: 0 0 20px;
+    background: linear-gradient(95deg, var(--pink) 0%, var(--violet) 45%, var(--cyan) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 4px 24px rgba(255,63,176,0.25));
+  }
+
+  .welcome-msg{
+    font-size: 1.15rem;
+    line-height: 1.65;
+    color: var(--text-main);
+    font-weight: 600;
+    max-width: 640px;
+    margin: 0 auto 8px;
+  }
+
+  .welcome-msg .wink{
+    color: var(--pink);
+  }
+
+  .subtext{
+    color: var(--text-muted);
+    font-size: 0.98rem;
+    font-weight: 600;
+    margin-top: 6px;
+  }
+
+  /* ---------- Disclaimer ---------- */
+  .disclaimer{
+    max-width: 640px;
+    margin: 26px auto 0;
+    background: rgba(255,77,94,0.1);
+    border: 1.5px solid rgba(255,77,94,0.55);
+    color: var(--red);
+    font-weight: 800;
+    font-size: 0.95rem;
+    padding: 14px 20px;
+    border-radius: 14px;
+    display:flex;
+    align-items:flex-start;
+    gap: 10px;
+    text-align: left;
+  }
+
+  .disclaimer .icon{
+    flex-shrink:0;
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+
+  /* ---------- Form ---------- */
+  section.form-section{
+    max-width: 480px;
+    margin: 46px auto 0;
+    padding: 0 20px;
+  }
+
+  .form-card{
+    background: var(--panel);
+    border: 1px solid var(--panel-border);
+    border-radius: 22px;
+    padding: 28px 26px 26px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+  }
+
+  .form-card h2{
+    font-family:'Baloo 2', sans-serif;
+    font-size: 1.35rem;
+    margin: 0 0 4px;
+    color: var(--text-main);
+  }
+
+  .form-card p{
+    margin: 0 0 18px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .input-row{
+    display:flex;
+    gap: 10px;
+  }
+
+  #nombreInput{
+    flex:1;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1.5px solid var(--panel-border);
+    background: rgba(255,255,255,0.04);
+    color: var(--text-main);
+    font-family:'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+  }
+
+  #nombreInput::placeholder{
+    color: rgba(244,240,255,0.35);
+    font-weight: 600;
+  }
+
+  #nombreInput:focus{
+    border-color: var(--pink);
+    box-shadow: 0 0 0 4px rgba(255,63,176,0.18);
+  }
+
+  #enviarBtn{
+    border: none;
+    cursor: pointer;
+    padding: 14px 22px;
+    border-radius: 14px;
+    font-family:'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--bg-deep);
+    background: linear-gradient(90deg, var(--yellow), var(--pink));
+    box-shadow: 0 8px 22px rgba(255,63,176,0.35);
+    transition: transform .15s ease, box-shadow .15s ease;
+    white-space: nowrap;
+  }
+
+  #enviarBtn:hover{
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 12px 28px rgba(255,63,176,0.45);
+  }
+
+  #enviarBtn:active{
+    transform: translateY(0) scale(0.98);
+  }
+
+  #formMsg{
+    min-height: 20px;
+    margin-top: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--green);
+  }
+
+  /* ---------- Participants ---------- */
+  section.participants-section{
+    max-width: 1000px;
+    margin: 60px auto 80px;
+    padding: 0 20px;
+    text-align:center;
+  }
+
+  h2.participants-title{
+    font-family:'Baloo 2', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.8rem, 4.5vw, 2.6rem);
+    margin: 0 0 6px;
+    color: var(--text-main);
+    text-shadow: 0 0 30px rgba(176,107,255,0.4);
+  }
+
+  .participants-count{
+    color: var(--text-muted);
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 34px;
+  }
+
+  .participants-count span{
+    color: var(--cyan);
+  }
+
+  #listaParticipantes{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 14px 16px;
+    min-height: 80px;
+  }
+
+  .participant-chip{
+    font-family:'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1rem, 2.4vw, 1.35rem);
+    padding: 10px 22px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.04);
+    border: 2px solid currentColor;
+    box-shadow: 0 6px 18px -6px currentColor;
+    animation: pop .35s ease;
+    transition: transform .18s ease;
+    cursor: default;
+  }
+
+  .participant-chip:hover{
+    transform: translateY(-4px) scale(1.05) rotate(-1deg);
+  }
+
+  @keyframes pop{
+    from{ opacity:0; transform: scale(0.5) translateY(10px); }
+    to{ opacity:1; transform: scale(1) translateY(0); }
+  }
+
+  .empty-state{
+    color: var(--text-muted);
+    font-weight: 700;
+    font-size: 0.95rem;
+    font-style: italic;
+  }
+
+  footer{
+    text-align:center;
+    padding: 30px 20px 50px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  @media (max-width: 480px){
+    .input-row{ flex-direction: column; }
+    #enviarBtn{ width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="hero">
+    <span class="badge-clan">🔥 Sorteo Oficial del Clan</span>
+    <h1 class="title">¡Bienvenido al Sorteo!</h1>
+    <p class="welcome-msg">
+      Gracias por participar en el sorteo del clan, algo único que no se ve en otros lados.
+      Te deseo toda la suerte<span class="wink"> 😉</span> y recuerda:
+      cuanto más veces compres, más posibilidades tienes de ganar.
+    </p>
+    <p class="subtext">Mucha suerte a todos los miembros del clan ✨</p>
+
+    <div class="disclaimer">
+      <span class="icon">⚠️</span>
+      <span>Si inscribes tu apodo más veces de las veces que compraste, serás automáticamente eliminado.</span>
+    </div>
+  </header>
+
+  <section class="form-section">
+    <div class="form-card">
+      <h2>Anota tu apodo 🎟️</h2>
+      <p>Puedes inscribirte tantas veces como compras hayas hecho.</p>
+      <div class="input-row">
+        <input type="text" id="nombreInput" placeholder="Escribe tu apodo aquí..." maxlength="24" autocomplete="off">
+        <button id="enviarBtn">Inscribir</button>
+      </div>
+      <div id="formMsg"></div>
+    </div>
+  </section>
+
+  <section class="participants-section">
+    <h2 class="participants-title">Participantes</h2>
+    <p class="participants-count"><span id="contador">0</span> inscripciones hasta ahora</p>
+    <div id="listaParticipantes"></div>
+  </section>
+
+  <footer>
+    Sorteo del Clan · Buena suerte a todos 🍀
+  </footer>
+
+<script>
+  const STORAGE_KEY = 'sorteoClanParticipantes';
+  const colores = ['pink', 'cyan', 'yellow', 'green', 'orange', 'violet'];
+
+  const input = document.getElementById('nombreInput');
+  const boton = document.getElementById('enviarBtn');
+  const mensaje = document.getElementById('formMsg');
+  const lista = document.getElementById('listaParticipantes');
+  const contador = document.getElementById('contador');
+
+  function obtenerParticipantes(){
+    try{
+      const data = localStorage.getItem(STORAGE_KEY);
+      return data ? JSON.parse(data) : [];
+    }catch(e){
+      return [];
+    }
+  }
+
+  function guardarParticipantes(lista){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
+  }
+
+  function renderParticipantes(){
+    const participantes = obtenerParticipantes();
+    contador.textContent = participantes.length;
+
+    if(participantes.length === 0){
+      lista.innerHTML = '<p class="empty-state">Todavía nadie se ha inscrito... ¡sé el primero! 🎉</p>';
+      return;
+    }
+
+    lista.innerHTML = '';
+    participantes.forEach((p, index) => {
+      const chip = document.createElement('span');
+      chip.className = 'participant-chip';
+      chip.textContent = p.nombre;
+      const color = colores[index % colores.length];
+      chip.style.color = `var(--${color})`;
+      lista.appendChild(chip);
+    });
+  }
+
+  function inscribirParticipante(){
+    const nombre = input.value.trim();
+
+    if(nombre === ''){
+      mensaje.style.color = 'var(--red)';
+      mensaje.textContent = 'Escribe tu apodo antes de inscribirte.';
+      return;
+    }
+
+    const participantes = obtenerParticipantes();
+    participantes.push({ nombre: nombre, fecha: new Date().toISOString() });
+    guardarParticipantes(participantes);
+
+    mensaje.style.color = 'var(--green)';
+    mensaje.textContent = `¡Listo! "${nombre}" fue inscrito. Mucha suerte 🍀`;
+
+    input.value = '';
+    input.focus();
+    renderParticipantes();
+  }
+
+  boton.addEventListener('click', inscribirParticipante);
+  input.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter'){
+      inscribirParticipante();
+    }
+  });
+
+  renderParticipantes();
+</script>
+
+</body>
+</html>
