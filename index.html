@@ -156,7 +156,7 @@
     gap: 10px;
   }
 
-  #nombreInput{
+  #nombreInput, #pinInput{
     flex:1;
     padding: 14px 16px;
     border-radius: 14px;
@@ -170,17 +170,17 @@
     transition: border-color .2s, box-shadow .2s;
   }
 
-  #nombreInput::placeholder{
+  #nombreInput::placeholder, #pinInput::placeholder{
     color: rgba(244,240,255,0.35);
     font-weight: 600;
   }
 
-  #nombreInput:focus{
+  #nombreInput:focus, #pinInput:focus{
     border-color: var(--pink);
     box-shadow: 0 0 0 4px rgba(255,63,176,0.18);
   }
 
-  #enviarBtn{
+  #enviarBtn, #pinBtn{
     border: none;
     cursor: pointer;
     padding: 14px 22px;
@@ -195,16 +195,16 @@
     white-space: nowrap;
   }
 
-  #enviarBtn:hover{
+  #enviarBtn:hover, #pinBtn:hover{
     transform: translateY(-2px) scale(1.02);
     box-shadow: 0 12px 28px rgba(255,63,176,0.45);
   }
 
-  #enviarBtn:active{
+  #enviarBtn:active, #pinBtn:active{
     transform: translateY(0) scale(0.98);
   }
 
-  #enviarBtn:disabled{
+  #enviarBtn:disabled, #pinBtn:disabled{
     opacity: 0.7;
     cursor: not-allowed;
   }
@@ -215,6 +215,19 @@
     font-size: 0.85rem;
     font-weight: 700;
     color: var(--green);
+  }
+
+  #pinMsg{
+    min-height: 20px;
+    margin-top: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--green);
+  }
+
+  #nombreInput:disabled{
+    opacity: 0.45;
+    cursor: not-allowed;
   }
 
   /* ---------- Participants ---------- */
@@ -294,7 +307,7 @@
 
   @media (max-width: 480px){
     .input-row{ flex-direction: column; }
-    #enviarBtn{ width: 100%; }
+    #enviarBtn, #pinBtn{ width: 100%; }
   }
 </style>
 </head>
@@ -319,10 +332,17 @@
   <section class="form-section">
     <div class="form-card">
       <h2>Anota tu apodo 🎟️</h2>
-      <p>Puedes inscribirte tantas veces como compras hayas hecho.</p>
+      <p>Al participar en el sorteo te daré un PIN para que puedas inscribirte y participar 🌶️.</p>
+
+      <div class="input-row" id="pinRow">
+        <input type="text" id="pinInput" placeholder="Ingresa el PIN de 6 dígitos" maxlength="6" autocomplete="off" inputmode="numeric">
+        <button id="pinBtn">Desbloquear</button>
+      </div>
+      <div id="pinMsg"></div>
+
       <div class="input-row">
-        <input type="text" id="nombreInput" placeholder="Escribe tu apodo aquí..." maxlength="24" autocomplete="off">
-        <button id="enviarBtn">Inscribir</button>
+        <input type="text" id="nombreInput" placeholder="Escribe tu apodo aquí..." maxlength="24" autocomplete="off" disabled>
+        <button id="enviarBtn" disabled>Inscribir</button>
       </div>
       <div id="formMsg"></div>
     </div>
@@ -357,6 +377,40 @@
   const mensaje = document.getElementById('formMsg');
   const lista = document.getElementById('listaParticipantes');
   const contador = document.getElementById('contador');
+
+  // ---- PIN de acceso ----
+  // Cambia este valor por el PIN de 6 dígitos que quieras usar.
+  const PIN_CORRECTO = "084172";
+
+  const pinRow = document.getElementById('pinRow');
+  const pinInput = document.getElementById('pinInput');
+  const pinBtn = document.getElementById('pinBtn');
+  const pinMsg = document.getElementById('pinMsg');
+
+  function verificarPin(){
+    const valor = pinInput.value.trim();
+
+    if(valor === PIN_CORRECTO){
+      input.disabled = false;
+      boton.disabled = false;
+      pinInput.disabled = true;
+      pinBtn.disabled = true;
+      pinMsg.style.color = 'var(--green)';
+      pinMsg.textContent = 'PIN correcto. Ya puedes inscribir tu apodo 🎉';
+      input.focus();
+    } else {
+      pinMsg.style.color = 'var(--red)';
+      pinMsg.textContent = 'PIN incorrecto. Intenta de nuevo.';
+    }
+  }
+
+  pinBtn.addEventListener('click', verificarPin);
+  pinInput.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter'){
+      verificarPin();
+    }
+  });
+  // ---- Fin PIN de acceso ----
 
   // 4. Leer datos en Tiempo Real (mantiene la lógica de colores alternados original)
   onValue(sorteoRef, (snapshot) => {
