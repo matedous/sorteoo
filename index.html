@@ -505,6 +505,32 @@
     </div>
   </header>
 
+  <section class="form-section">
+    <div class="form-card">
+      <h2>Anota tu apodo 🎟️</h2>
+      <p>Al participar en el sorteo te daré un PIN para que puedas inscribirte y participar 🌶️.</p>
+
+      <div class="input-row" id="pinRow">
+        <input type="text" id="pinInput" placeholder="Ingresa el PIN de 6 dígitos" maxlength="6" autocomplete="off" inputmode="numeric">
+        <button id="pinBtn">Desbloquear</button>
+      </div>
+      <div id="pinMsg"></div>
+
+      <div class="input-row">
+        <input type="text" id="nombreInput" placeholder="Escribe tu apodo aquí..." maxlength="24" autocomplete="off" disabled>
+        <button id="enviarBtn" disabled>Inscribir</button>
+      </div>
+      <div id="formMsg"></div>
+    </div>
+  </section>
+
+  <section class="participants-section">
+    <h2 class="participants-title">Participantes</h2>
+    <p class="participants-count"><span id="contador">0</span> inscripciones hasta ahora</p>
+    <div id="listaParticipantes"></div>
+  </section>
+
+
   <!-- ---------- Resultados del concurso ---------- -->
   <section class="results-section" id="resultadosSection">
     <div class="results-card">
@@ -524,14 +550,6 @@
       <div id="winnersList" class="winners-list" aria-live="polite"></div>
     </div>
   </section>
-
-
-  <section class="participants-section">
-    <h2 class="participants-title">Participantes</h2>
-    <p class="participants-count"><span id="contador">0</span> inscripciones hasta ahora</p>
-    <div id="listaParticipantes"></div>
-  </section>
-
 
   <footer>
     Sorteo del Clan · Buena suerte a todos 🍀
