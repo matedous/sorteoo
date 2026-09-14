@@ -309,6 +309,182 @@
     .input-row{ flex-direction: column; }
     #enviarBtn, #pinBtn{ width: 100%; }
   }
+
+  /* ---------- Concurso: resultados ---------- */
+  .results-section{
+    max-width: 760px;
+    margin: 70px auto 20px;
+    padding: 0 20px;
+  }
+
+  .results-card{
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255,63,176,0.13), transparent 42%),
+      var(--panel);
+    border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 24px;
+    padding: 30px 24px 28px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.38);
+    text-align:center;
+  }
+
+  .results-badge{
+    display:inline-block;
+    padding: 6px 15px;
+    border-radius:999px;
+    background: linear-gradient(90deg, var(--yellow), var(--orange));
+    color: var(--bg-deep);
+    font-family:'Baloo 2', sans-serif;
+    font-weight:800;
+    font-size:.82rem;
+    letter-spacing:1.5px;
+  }
+
+  .results-title{
+    font-family:'Baloo 2', sans-serif;
+    font-size:clamp(1.8rem, 5vw, 2.6rem);
+    margin:12px 0 3px;
+  }
+
+  .results-subtitle{
+    margin:0 0 24px;
+    color:var(--text-muted);
+    font-weight:600;
+  }
+
+  .reveal-area{
+    padding:22px 18px;
+    border-radius:18px;
+    background:rgba(0,0,0,.16);
+    border:1px solid rgba(255,255,255,.07);
+  }
+
+  .timer-label{
+    color:var(--text-muted);
+    font-size:.78rem;
+    font-weight:800;
+    letter-spacing:1.5px;
+  }
+
+  #revealTimer{
+    margin:3px 0 13px;
+    font-family:'Baloo 2', sans-serif;
+    font-size:clamp(3rem, 11vw, 5rem);
+    line-height:1;
+    font-weight:800;
+    color:var(--cyan);
+    text-shadow:0 0 28px rgba(36,224,255,.35);
+  }
+
+  .reveal-btn{
+    border:none;
+    cursor:pointer;
+    padding:13px 24px;
+    border-radius:14px;
+    font-family:'Baloo 2', sans-serif;
+    font-size:1rem;
+    font-weight:800;
+    color:var(--bg-deep);
+    background:linear-gradient(90deg,var(--yellow),var(--pink));
+    box-shadow:0 8px 24px rgba(255,63,176,.3);
+    transition:transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+  }
+
+  .reveal-btn:hover:not(:disabled){
+    transform:translateY(-2px) scale(1.02);
+    box-shadow:0 12px 30px rgba(255,63,176,.42);
+  }
+
+  .reveal-btn:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+  }
+
+  .reveal-msg{
+    margin:10px 0 0;
+    color:var(--text-muted);
+    font-size:.82rem;
+    font-weight:600;
+  }
+
+  .winners-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-top:22px;
+  }
+
+  .winner-row{
+    display:grid;
+    grid-template-columns:58px 1fr;
+    align-items:center;
+    min-height:64px;
+    padding:8px 14px 8px 8px;
+    border-radius:17px;
+    background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.07);
+    text-align:left;
+    opacity:0;
+    transform:translateY(18px) scale(.98);
+  }
+
+  .winner-row.show{
+    animation:winnerIn .55s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+
+  .winner-place{
+    width:46px;
+    height:46px;
+    display:grid;
+    place-items:center;
+    border-radius:14px;
+    font-family:'Baloo 2', sans-serif;
+    font-size:1.15rem;
+    font-weight:800;
+    color:var(--bg-deep);
+    background:linear-gradient(135deg,var(--violet),var(--cyan));
+  }
+
+  .winner-row:first-child{
+    border-color:rgba(255,210,63,.45);
+    background:linear-gradient(90deg,rgba(255,210,63,.11),rgba(255,255,255,.035));
+    box-shadow:0 10px 28px rgba(255,210,63,.08);
+  }
+
+  .winner-row:first-child .winner-place{
+    background:linear-gradient(135deg,var(--yellow),var(--orange));
+  }
+
+  .winner-label{
+    color:var(--text-muted);
+    font-size:.72rem;
+    font-weight:800;
+    letter-spacing:1px;
+    text-transform:uppercase;
+  }
+
+  .winner-name{
+    display:block;
+    margin-top:1px;
+    color:var(--text-main);
+    font-family:'Baloo 2', sans-serif;
+    font-size:1.25rem;
+    font-weight:800;
+    word-break:break-word;
+  }
+
+  @keyframes winnerIn{
+    0%{opacity:0; transform:translateY(18px) scale(.98);}
+    65%{opacity:1; transform:translateY(-3px) scale(1.01);}
+    100%{opacity:1; transform:translateY(0) scale(1);}
+  }
+
+  @media (max-width:480px){
+    .results-card{padding:24px 15px;}
+    .winner-row{grid-template-columns:52px 1fr;}
+    .winner-place{width:42px;height:42px;}
+  }
+
 </style>
 </head>
 <body>
@@ -352,6 +528,27 @@
     <h2 class="participants-title">Participantes</h2>
     <p class="participants-count"><span id="contador">0</span> inscripciones hasta ahora</p>
     <div id="listaParticipantes"></div>
+  </section>
+
+
+  <!-- ---------- Resultados del concurso ---------- -->
+  <section class="results-section" id="resultadosSection">
+    <div class="results-card">
+      <div class="results-badge">🏆 RESULTADOS</div>
+      <h2 class="results-title">Los ganadores del concurso</h2>
+      <p class="results-subtitle">El puesto #1 es el premio principal.</p>
+
+      <div class="reveal-area">
+        <div class="timer-label">REVELACIÓN DE RESULTADOS</div>
+        <div id="revealTimer">00:00</div>
+        <button id="revealBtn" class="reveal-btn" type="button">
+          🔒 Revelar ganadores
+        </button>
+        <p id="revealMsg" class="reveal-msg">El botón estará disponible cuando tú decidas revelar los resultados.</p>
+      </div>
+
+      <div id="winnersList" class="winners-list" aria-live="polite"></div>
+    </div>
   </section>
 
   <footer>
@@ -478,6 +675,110 @@
       inscribirParticipante();
     }
   });
+
+
+  // ---------- Revelación de ganadores ----------
+  // Reemplaza SOLO los valores de GANADORES_CODIFICADOS por tus 10 nombres
+  // convertidos a Base64. No pongas los nombres directamente aquí.
+  const GANADORES_CODIFICADOS = [
+    "Q2hpY2hp",
+    "Q2hva28yMQ==",
+    "THRidWlsZA==",
+    "R3V0aQ==",
+    "R2VyeWdn",
+    "QXBvY2FsaXB0aWNv",
+    "TWxk",
+    "U3JNYXlzdGVy",
+    "TWF0aWFzIEdhcmNpYQ==",
+    "QW5kcmVzQWhlZG8="
+  ];
+
+  const revealBtn = document.getElementById('revealBtn');
+  const winnersList = document.getElementById('winnersList');
+  const revealMsg = document.getElementById('revealMsg');
+  const revealTimer = document.getElementById('revealTimer');
+
+  // Temporizador visual. Puedes cambiar 10 por los segundos que quieras.
+  let segundosRestantes = 10;
+  let revelado = false;
+
+  function actualizarTemporizador(){
+    const s = String(segundosRestantes).padStart(2, '0');
+    revealTimer.textContent = `00:${s}`;
+  }
+
+  actualizarTemporizador();
+  revealBtn.disabled = true;
+
+  const intervaloRevelacion = setInterval(() => {
+    segundosRestantes--;
+
+    if(segundosRestantes <= 0){
+      segundosRestantes = 0;
+      clearInterval(intervaloRevelacion);
+      actualizarTemporizador();
+      revealBtn.disabled = false;
+      revealMsg.textContent = 'El temporizador terminó. Cuando quieras, presiona el botón para revelar.';
+      revealMsg.style.color = 'var(--yellow)';
+      return;
+    }
+
+    actualizarTemporizador();
+  }, 1000);
+
+  function decodificar(texto){
+    try{
+      return decodeURIComponent(
+        atob(texto)
+          .split('')
+          .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+    }catch(error){
+      return atob(texto);
+    }
+  }
+
+  function revelarGanadores(){
+    if(revelado || segundosRestantes > 0) return;
+
+    revelado = true;
+    revealBtn.disabled = true;
+    revealBtn.textContent = '✓ Resultados revelados';
+    revealMsg.textContent = 'Estos son los resultados oficiales del concurso.';
+    revealMsg.style.color = 'var(--green)';
+
+    winnersList.innerHTML = '';
+
+    GANADORES_CODIFICADOS.forEach((codigo, index) => {
+      const row = document.createElement('div');
+      row.className = 'winner-row';
+
+      const puesto = document.createElement('div');
+      puesto.className = 'winner-place';
+      puesto.textContent = `#${index + 1}`;
+
+      const contenido = document.createElement('div');
+
+      const label = document.createElement('span');
+      label.className = 'winner-label';
+      label.textContent = index === 0 ? 'Premio principal' : `Puesto ${index + 1}`;
+
+      const nombre = document.createElement('span');
+      nombre.className = 'winner-name';
+      nombre.textContent = decodificar(codigo);
+
+      contenido.appendChild(label);
+      contenido.appendChild(nombre);
+      row.appendChild(puesto);
+      row.appendChild(contenido);
+      winnersList.appendChild(row);
+
+      setTimeout(() => row.classList.add('show'), index * 350);
+    });
+  }
+
+  revealBtn.addEventListener('click', revelarGanadores);
 
 </script>
 
